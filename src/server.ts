@@ -3,7 +3,7 @@ import http from "http";
 import { handleAuthRoutes } from "./routes/auth";
 import { handlePostRoutes } from "./routes/posts";
 import { handleApiError } from "./utils/error";
-
+import { handleCategoryRoutes } from "./routes/categories";
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -23,6 +23,11 @@ export function startServer() {
                 return;
             }
 
+            const categoryHandled = await handleCategoryRoutes(req, res);
+            if(categoryHandled) {
+                return;
+            }
+            
             handleApiError(res, "Not Found", 404);
         }catch (error) {
             console.error("Server error:", error);
